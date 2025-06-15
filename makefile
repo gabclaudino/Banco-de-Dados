@@ -9,3 +9,5 @@ escalona.o: escalona.c
 clean:
 	rm -rf *.o *~
 
+purge: clean
+	rm escalona
