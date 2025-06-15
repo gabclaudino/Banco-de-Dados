@@ -32,7 +32,7 @@ typedef struct {
 int adj[MAX_TX][MAX_TX];   // matriz de adjacencia
 int n_tx;                  // numero de transacoes distintas
 int tx_ids[MAX_TX];        // lista de tids no escalonamento
-int cor[MAX_TX];           // para DFS (0=branco,1=cinza,2=preto)
+int cor[MAX_TX];           // para DFS (0 = branco, 1 = cinza, 2 = preto)
 
 // estrutura para capturar informacoes de leituras
 typedef struct {
@@ -301,23 +301,29 @@ int presente(int *arr, int n, int tid) {
 }
 
 int main() {
-    Schedule sch; sch.n_ops = 0;
-    int active_tids[MAX_TX]; int n_active=0;
-    int schedule_id=1;
+    Schedule sch; 
+    sch.n_ops = 0;
+    int active_tids[MAX_TX]; 
+    int n_active = 0;
+    int schedule_id = 1;
     while (1) {
         Op op;
-        if (scanf("%d %d %c %s", &op.time, &op.tid, &op.op, op.attr)!=4) break;
-        sch.ops[sch.n_ops++]=op;
-        if (op.op=='R'||op.op=='W') {
-            if (!presente(active_tids, n_active, op.tid)) active_tids[n_active++]=op.tid;
-        } else if (op.op=='C') {
-            for (int i=0;i<n_active;i++) if (active_tids[i]==op.tid) {
-                active_tids[i]=active_tids[--n_active]; break;
+        if (scanf("%d %d %c %s", &op.time, &op.tid, &op.op, op.attr) != 4) 
+            break;
+        sch.ops[sch.n_ops++] = op;
+        if (op.op == 'R'|| op.op== 'W') {
+            if (!presente(active_tids, n_active, op.tid)) 
+                active_tids[n_active++] = op.tid;
+        } else if (op.op == 'C') {
+            for (int i = 0; i < n_active; i++) 
+                if (active_tids[i] == op.tid) {
+                    active_tids[i] = active_tids[--n_active]; 
+                    break;
             }
         }
-        if (n_active==0 && sch.n_ops>0) {
+        if (n_active == 0 && sch.n_ops > 0) {
             processar_escalonamento(&sch, schedule_id++);
-            sch.n_ops=0; n_active=0;
+            sch.n_ops = 0; n_active = 0;
         }
     }
     return 0;
